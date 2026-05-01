@@ -1,0 +1,684 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fontenc}
+\usepackage{inputenc}
+\usepackage{titlesec}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{float}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Fire Fighter Monitoring System}
+\lhead{VIT -- ECE Department}
+\rfoot{Page \thepage}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+% Code listing style
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	backgroundcolor=\color{gray!10},
+	frame=single,
+	breaklines=true,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red!70!black},
+	commentstyle=\color{green!50!black},
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	xleftmargin=2em,
+	framexleftmargin=1.5em,
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	citecolor=blue
+}
+
+\begin{document}
+	
+	%-----------------------------------------------
+	% TITLE PAGE
+	%-----------------------------------------------
+	\begin{titlepage}
+		\centering
+		\vspace*{1cm}
+		{\LARGE\bfseries FIRE FIGHTER MONITORING SYSTEM\\[0.4em]
+			Project Report\par}
+		\vspace{1.5cm}
+		\rule{\linewidth}{0.5mm}\\[0.4cm]
+		
+		\textbf{Submitted by:}\\[0.3em]
+		Rahul Nerella \quad Reg No: 24BEC0071\\
+		Sachith Velavan \quad Reg No: 24BEC0736\\[1cm]
+		
+		\textbf{Submitted to:}\\[0.3em]
+		Department of Electronics and Communication Engineering\\[1cm]
+		
+		\textit{In partial fulfillment of the requirements for the course}\\[1cm]
+		
+		\textbf{Institution:}\\[0.3em]
+		Vellore Institute of Technology (VIT)\\[1cm]
+		
+		\textbf{Academic Year:}\\[0.3em]
+		2025 -- 2026\\[2cm]
+		
+		\rule{\linewidth}{0.5mm}
+	\end{titlepage}
+	
+	%-----------------------------------------------
+	% TABLE OF CONTENTS
+	%-----------------------------------------------
+	\tableofcontents
+	\newpage
+	
+	%-----------------------------------------------
+	% REVIEW 1
+	%-----------------------------------------------
+	\section{Review 1: Firefighter Monitoring System}
+	
+	\subsection{Research Problem}
+	Firefighters operate in hazardous environments with limited real-time monitoring of health parameters and location, which can lead to delayed rescue and increased fatality risk.
+	
+	\subsection{Identified Gap in Literature}
+	\begin{itemize}
+		\item Existing systems focus on either health monitoring \textbf{OR} location tracking, not both integrated.
+		\item Lack of low-power long-range communication (LoRa) in indoor fire scenarios.
+		\item Limited real-time alert systems for emergency conditions.
+	\end{itemize}
+	
+	\subsection{Topic Justification}
+	\begin{itemize}
+		\item \textbf{Relevant to field:} Embedded systems, IoT, communication (ECE domain).
+		\item \textbf{Novelty:} Integration of GPS + health sensors + LoRa communication.
+		\item \textbf{Feasible:} Uses ESP32, sensors, and LoRa modules.
+		\item \textbf{Publishable:} Fits IoT, smart safety, and emergency response research.
+	\end{itemize}
+	
+	\subsection{Proposed Contribution}
+	A real-time firefighter safety system that integrates:
+	\begin{itemize}
+		\item Vital monitoring (temperature, gas, heart rate)
+		\item Location tracking (GPS)
+		\item Long-range communication (LoRa)
+		\item Emergency alert system
+	\end{itemize}
+	
+	\subsection{Summary of Literature}
+	
+	\subsubsection{What is Known}
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{9cm}}
+			\toprule
+			Area & Existing Work \\
+			\midrule
+			Health Monitoring & Wearable sensors for heart rate \& temperature \\
+			Location Tracking & GPS-based outdoor tracking systems \\
+			Communication & Wi-Fi / Zigbee used for short-range transmission \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{What is Unknown / Gap}
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{9cm}}
+			\toprule
+			Gap & Description \\
+			\midrule
+			Integration & No unified system combining all features \\
+			Indoor Tracking & GPS fails indoors; limited alternatives \\
+			Long-range comm & Lack of LoRa-based firefighter systems \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{Methods Used by Others}
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{9cm}}
+			\toprule
+			Method & Description \\
+			\midrule
+			IoT Systems & Cloud-based monitoring \\
+			Wireless Comm & Wi-Fi, Bluetooth \\
+			Sensors & Basic environmental sensors \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{Limitations of Past Studies}
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{9cm}}
+			\toprule
+			Limitation & Issue \\
+			\midrule
+			Short Range & Wi-Fi fails in disaster zones \\
+			High Power Usage & Not suitable for long missions \\
+			No Alerts & Lack of real-time emergency triggers \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Tool Used}
+	\begin{itemize}
+		\item Reference manager: JabRef
+	\end{itemize}
+	
+	\subsection{Sub-Goals}
+	\begin{itemize}
+		\item Monitor firefighter vital signs (temperature, heart rate)
+		\item Detect hazardous gases
+		\item Track location using GPS
+		\item Enable long-range communication using LoRa
+		\item Implement emergency alert button/system
+	\end{itemize}
+	
+	\subsection{Hypotheses}
+	\begin{itemize}
+		\item Integration of LoRa improves communication reliability in fire scenarios.
+		\item Real-time monitoring reduces response time in emergencies.
+		\item Multi-sensor systems improve firefighter safety significantly.
+	\end{itemize}
+	
+	\subsection{Scope}
+	\begin{itemize}
+		\item Focus on prototype development
+		\item Real-time monitoring using ESP32
+		\item Outdoor GPS-based tracking
+		\item LoRa communication testing
+	\end{itemize}
+	
+	\subsection{Limitations}
+	\begin{itemize}
+		\item GPS may not work indoors
+		\item Limited sensor accuracy
+		\item Prototype-level implementation (not industrial-grade)
+	\end{itemize}
+	
+	%-----------------------------------------------
+	% REVIEW 2
+	%-----------------------------------------------
+	\section{Review 2: Firefighter Monitoring System}
+	
+	\subsection{Experimental Setup}
+	
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4.5cm} p{4.5cm} p{5cm}}
+			\toprule
+			Component & Purpose & Reason for Selection \\
+			\midrule
+			ESP32 & Main controller & Low power, built-in WiFi/Bluetooth \\
+			LoRa Module (SX1278) & Long-range communication & Works in low-signal environments \\
+			GPS Module (NEO6M) & Location tracking & Accurate outdoor positioning \\
+			Temperature Sensor & Body/environment monitoring & Detect heat exposure \\
+			Gas Sensor (MQ series) & Toxic gas detection & Safety in fire conditions \\
+			Pulse Sensor & Heart rate monitoring & Health tracking \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Algorithms / Models Used}
+	\begin{itemize}
+		\item Threshold-based alert system (for temperature, gas, heart rate)
+		\item GPS coordinate extraction (NMEA parsing)
+		\item LoRa packet transmission protocol
+		\item Sensor data filtering (basic averaging)
+		\item Emergency trigger logic (button-based interrupt)
+	\end{itemize}
+	
+	\subsection{Instruments / Tools}
+	
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{5cm} p{8cm}}
+			\toprule
+			Tool / Platform & Purpose \\
+			\midrule
+			Arduino IDE & Programming ESP32 \\
+			Serial Monitor & Debugging \\
+			LoRa Library & Communication setup \\
+			TinyGPS++ & GPS data parsing \\
+			Breadboard + Power Supply & Circuit prototyping \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Sampling Details}
+	\begin{itemize}
+		\item Sampling size: Multiple test runs (10--20 iterations)
+		\item Technique: Real-time continuous data collection
+		\item Environment: Indoor + outdoor testing
+	\end{itemize}
+	
+	\subsection{Statistical Methods}
+	\begin{itemize}
+		\item Mean and average sensor values
+		\item Error comparison across trials
+		\item Response time measurement for alerts
+	\end{itemize}
+	
+	\subsection{Procedure}
+	\begin{enumerate}
+		\item Connect all sensors to ESP32
+		\item Initialize GPS, LoRa, and sensors
+		\item Collect real-time data (temperature, gas, heart rate, location)
+		\item Transmit data using LoRa
+		\item Trigger alerts when thresholds exceed limits
+	\end{enumerate}
+	
+	\subsection{Data Collection}
+	
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{4cm} p{4cm}}
+			\toprule
+			Parameter & Observed Value & Status \\
+			\midrule
+			Temperature & 45\textdegree C & High \\
+			Gas Level & 300 ppm & Moderate \\
+			Heart Rate & 110 bpm & Elevated \\
+			GPS & Valid coordinates & Active \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Validation}
+	\begin{itemize}
+		\item Cross-checked sensor readings with expected ranges
+		\item Verified GPS output using known location
+		\item Confirmed LoRa transmission range
+	\end{itemize}
+	
+	\subsection{Trial Repetition}
+	Conducted multiple trials under:
+	\begin{itemize}
+		\item Normal conditions
+		\item Simulated high-temperature conditions
+	\end{itemize}
+	Ensured consistent outputs. Serial logs were recorded, data noted in tabular format, and backups maintained.
+	
+	\subsection{Results in Tabular Form}
+	
+	\subsubsection{Results Table}
+	\begin{center}
+		\begin{tabular}{ccccc}
+			\toprule
+			Trial & Temp (\textdegree C) & Gas (ppm) & Heart Rate (bpm) & Alert Triggered \\
+			\midrule
+			1 & 30 & 100 & 80 & No \\
+			2 & 45 & 300 & 110 & Yes \\
+			3 & 50 & 400 & 120 & Yes \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{Statistical Analysis}
+	\begin{itemize}
+		\item Average temperature increased in hazardous conditions.
+		\item Alert triggered when thresholds exceeded.
+		\item Consistent response across trials.
+	\end{itemize}
+	
+	\subsubsection{Comparison with Existing Systems}
+	\begin{center}
+		\begin{tabular}{>{\bfseries}p{4cm} p{4.5cm} p{4.5cm}}
+			\toprule
+			Feature & Existing Systems & Proposed System \\
+			\midrule
+			Communication & Short-range (Wi-Fi) & Long-range (LoRa) \\
+			Monitoring & Partial & Multi-parameter \\
+			Alerts & Limited & Real-time alerts \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{Interpretation of Results}
+	\begin{itemize}
+		\item System successfully detects dangerous conditions.
+		\item LoRa ensures communication even in harsh environments.
+		\item Real-time alerts improve response time.
+	\end{itemize}
+	
+	%-----------------------------------------------
+	% REVIEW 3
+	%-----------------------------------------------
+	\section{Review 3: IoT-Based Multi-Node Firefighter Monitoring System with Edge AI and Real-Time Dashboard}
+	
+	\subsection{Abstract}
+	Firefighting environments are highly hazardous, requiring real-time monitoring of personnel to ensure safety and operational efficiency. This paper presents a complete IoT-based multi-node firefighter monitoring system integrating embedded devices, edge-based TinyML inference, LoRa communication, and a real-time web dashboard. Each firefighter is equipped with an ESP32-based wearable device that collects environmental and motion data, performs local inference such as fall detection, air quality classification, and activity recognition, and transmits processed data via LoRa. A receiver node forwards the data to a Node.js server, which handles storage, parsing, and real-time visualization through a web-based dashboard. The system supports dynamic multi-node monitoring, emergency alerts, and efficient data logging, providing a scalable and reliable solution for firefighter safety.
+	
+	\noindent\textbf{Keywords:} IoT, Firefighter Safety, TinyML, LoRa Communication, Real-Time Monitoring, Edge Computing, Embedded Systems.
+	
+	\subsection{Introduction}
+	Firefighters operate in extreme conditions involving high temperatures, toxic gases, and structural instability. Continuous monitoring of their health and surroundings is critical for ensuring safety. Traditional systems lack real-time analytics and scalable monitoring capabilities. This work proposes an IoT-based system that integrates edge intelligence, wireless communication, and real-time visualization to enhance firefighter safety and decision-making.
+	
+	\subsection{System Architecture}
+	The system consists of three main layers:
+	\begin{enumerate}
+		\item The Firefighter Node
+		\item The Communication Layer
+		\item Backend and Data Visualization Layer
+	\end{enumerate}
+	
+	%--- Layer 1
+	\subsubsection{Layer 1: The Firefighter Node}
+	Each firefighter is equipped with an ESP32-based wearable device integrated with environmental sensors and GPS. The device performs local TinyML inference and transmits processed data via LoRa.
+	
+	The ESP32 microcontroller forms the backbone of the edge layer. It is a low-cost, low-power SoC with integrated Wi-Fi, Bluetooth, and multiple peripheral interfaces, making it suitable for embedded IoT systems \cite{dey2023}.
+	
+	\paragraph{Sender ESP32:}
+	\begin{itemize}
+		\item Reads sensor data
+		\item Performs TinyML inference (fall detection, activity recognition, air quality classification)
+		\item Packages data into JSON format
+		\item Transmits via LoRa
+	\end{itemize}
+	
+	\paragraph{Receiver ESP32:}
+	\begin{itemize}
+		\item Receives LoRa packets
+		\item Sends data to backend server via serial communication
+	\end{itemize}
+	
+	\paragraph{DHT22 Temperature Sensor:}
+	Temperature monitoring is a critical parameter in IoT-based environmental systems. The DHT22 sensor provides accurate temperature and humidity measurements with an accuracy of approximately $\pm0.5$\textdegree C, making it suitable for real-time monitoring applications \cite{ahmad2021}. Connected to ESP32 GPIO, it provides environmental context for heat exposure detection and fire hazard identification.
+	
+	\paragraph{MQ Gas Sensors:}
+	Air quality monitoring is essential in hazardous environments such as firefighting scenarios. MQ sensors detect gases based on changes in resistance due to gas concentration, making them suitable for low-cost IoT deployments \cite{wang2023}.
+	\begin{itemize}
+		\item MQ-2 $\rightarrow$ detects smoke and combustible gases
+		\item MQ-9 $\rightarrow$ detects carbon monoxide (CO)
+		\item MQ-135 $\rightarrow$ detects air pollutants and toxic gases
+	\end{itemize}
+	Used for air quality classification (SAFE, SMOKE, TOXIC) and supports TinyML-based classification at the edge.
+	
+	\paragraph{Flame Sensor:}
+	Flame sensors detect infrared radiation emitted by flames and are commonly used in IoT-based fire detection systems \cite{bolimera2025}. Digital output is connected to ESP32. Used in conjunction with DHT22 and MQ sensors to contribute to fire validation logic (\texttt{fire\_valid}) and reduce false positives through multi-sensor fusion.
+	
+	\paragraph{MPU6050 IMU:}
+	The MPU6050 sensor provides 3-axis accelerometer and 3-axis gyroscope data, enabling motion tracking and orientation analysis. Connected via I2C interface and used for:
+	\begin{itemize}
+		\item Fall detection (FALL / NORMAL)
+		\item Activity recognition (RUNNING, WALKING, STILL)
+		\item Anomaly detection
+	\end{itemize}
+	
+	\paragraph{GPS Module (NEO-6M):}
+	Location tracking is essential in emergency response systems. Connected via UART; outputs latitude and longitude embedded in the transmitted JSON. Enables quick emergency response and is used when the emergency button is triggered.
+	
+	\paragraph{LoRa Module (SX1278):}
+	LoRa is a low-power wide-area network (LPWAN) technology designed for long-range communication in IoT systems. Connected to ESP32 via SPI. The sender transmits processed data while the receiver collects and forwards it to the server, ensuring communication even in disaster zones.
+	
+	%--- Layer 2
+	\subsubsection{Layer 2: Communication Layer}
+	LoRa (Long Range) is a wireless communication technology specifically designed for LPWANs, enabling communication over long distances with minimal energy consumption \cite{haif2024}.
+	
+	LoRa systems typically follow a star topology, where multiple end devices transmit data to a central gateway \cite{sole2022}:
+	\begin{itemize}
+		\item Firefighter wearable devices act as LoRa end nodes
+		\item Receiver ESP32 acts as the gateway
+		\item Data is transmitted in uplink packets (LoRa frames)
+	\end{itemize}
+	
+	LoRa allows communication over distances exceeding 1\,km in practical deployments while maintaining low energy usage \cite{obrien2025}. Despite its advantages, LoRa faces challenges such as packet collisions, limited data rate, and signal attenuation in harsh environments. Mitigation techniques include:
+	\begin{itemize}
+		\item Adaptive spreading factor allocation
+		\item Frequency channel selection
+		\item Relay-based communication (can increase coverage by up to 40\%)
+	\end{itemize}
+	
+	%--- Layer 3
+	\subsubsection{Layer 3: Backend and Data Visualization Layer}
+	A Node.js server processes incoming data, stores it in multiple formats (JSON, CSV, SQLite), and transmits updates to a real-time dashboard using Socket.io.
+	
+	\paragraph{Node.js Backend:}
+	The backend is built using Node.js, which uses a single-threaded, event-driven architecture with non-blocking I/O, allowing it to handle thousands of concurrent connections efficiently \cite{huang2020}. Node.js can support tens of thousands of simultaneous connections due to its lightweight architecture.
+	
+	\paragraph{Backend Structural Design (MVC Pattern):}
+	The backend follows a modular architecture inspired by the Model--View--Controller (MVC) design pattern \cite{senivongse2025}:
+	\begin{itemize}
+		\item \textbf{Model:} stores firefighter data (JSON, CSV, SQLite)
+		\item \textbf{Controller:} processes incoming LoRa data
+		\item \textbf{Route:} handles API endpoints
+	\end{itemize}
+	
+	\paragraph{Data Storage and Management:}
+	The backend stores all incoming data using multiple storage methods:
+	\begin{itemize}
+		\item JSON files $\rightarrow$ session logging
+		\item CSV $\rightarrow$ structured data logging
+		\item SQLite $\rightarrow$ persistent database
+	\end{itemize}
+	
+	\paragraph{Real-Time Communication (Socket.io):}
+	The system uses WebSocket-based communication (Socket.io) to provide real-time updates to the frontend. Backend emits updates instantly; frontend receives live data without page refresh \cite{chaplia2023}.
+	
+	\paragraph{Real-Time Data Visualization (Frontend Dashboard):}
+	The frontend dashboard receives real-time data from the backend and displays:
+	\begin{itemize}
+		\item Sensor readings
+		\item Location data
+		\item AI inference outputs
+		\item Emergency alerts
+	\end{itemize}
+	
+	Map-based visualization uses Leaflet.js with dynamic markers and color-coded status:
+	\begin{itemize}
+		\item \textcolor{green!60!black}{Green} $\rightarrow$ Safe
+		\item \textcolor{red}{Red} $\rightarrow$ Danger
+		\item \textcolor{red}{\textit{Flashing Red}} $\rightarrow$ Emergency
+	\end{itemize}
+	
+	\paragraph{Emergency Visualization System:}
+	\begin{itemize}
+		\item Flashing red indicators
+		\item Pulse animation
+		\item Alert sound
+		\item Auto-focus on affected node
+	\end{itemize}
+	
+	\paragraph{Optional Graph Visualization (Chart.js):}
+	Enables temperature trends, gas concentration trends, and historical analysis to support predictive safety decisions.
+	
+	\subsection{Edge Intelligence using TinyML}
+	The system leverages TinyML models deployed on ESP32 devices to perform:
+	\begin{itemize}
+		\item \textbf{Fall Detection:} Identifies sudden motion changes (FALL / NORMAL)
+		\item \textbf{Air Quality Classification:} SAFE, SMOKE, TOXIC, CO\_DANGER
+		\item \textbf{Fire Validation:} Sensor fusion-based fire detection
+		\item \textbf{Activity Recognition:} STILL, WALKING, RUNNING
+		\item \textbf{Anomaly Detection:} Detects unusual patterns
+	\end{itemize}
+	This reduces latency and bandwidth usage by transmitting only processed data.
+	
+	\subsection{Data Format and Transmission}
+	Each node transmits structured JSON data:
+	
+	\begin{lstlisting}[language={}]
+		{
+			"id": 1,
+			"temp": 32,
+			"mq2": 300,
+			"mq9": 200,
+			"mq135": 400,
+			"lat": 17.12,
+			"lon": 78.12,
+			"status": "DANGER",
+			"fall_status": "FALL",
+			"air_quality": "TOXIC",
+			"fire_valid": true,
+			"activity": "RUNNING",
+			"anomaly": false,
+			"emergency": true,
+			"timestamp": "ISO STRING"
+		}
+	\end{lstlisting}
+	
+	\subsection{Backend Design}
+	The backend is implemented using Node.js, Express, and Socket.io.
+	
+	\noindent\textbf{Key Features:}
+	\begin{itemize}
+		\item Serial communication using \texttt{serialport}
+		\item Safe JSON parsing
+		\item In-memory node tracking: \texttt{nodes = \{ id: latest\_data \}}
+		\item Real-time WebSocket updates
+		\item Data storage: JSON logs, CSV files, SQLite database
+	\end{itemize}
+	
+	\subsection{Frontend Dashboard}
+	
+	\noindent\textbf{Features:}
+	\begin{itemize}
+		\item Multi-node visualization
+		\item Interactive map (Leaflet.js)
+		\item Dynamic node cards
+		\item Real-time updates via Socket.io
+		\item Graphical trends (Chart.js -- optional)
+	\end{itemize}
+	
+	\noindent\textbf{UI Design:}
+	\begin{itemize}
+		\item Dark theme
+		\item Glassmorphism
+		\item Neon accents (cyan/red)
+		\item Smooth animations
+	\end{itemize}
+	
+	\subsection{Emergency Handling System}
+	Each node includes a physical emergency button. When triggered:
+	\begin{itemize}
+		\item \texttt{emergency = true}
+		\item Immediate transmission of GPS location
+		\item Multiple packet transmission
+	\end{itemize}
+	
+	\noindent\textbf{Frontend Response:}
+	\begin{itemize}
+		\item Flashing red alert
+		\item Sound notification
+		\item Auto-focus on map
+		\item Highlighted node card
+	\end{itemize}
+	
+	\subsection{Results and Discussion}
+	The system successfully demonstrated:
+	\begin{itemize}
+		\item Reliable multi-node communication via LoRa
+		\item Accurate edge-based inference using TinyML
+		\item Real-time monitoring with minimal latency
+		\item Effective emergency detection and visualization
+	\end{itemize}
+	The modular architecture allows easy scalability and integration with additional sensors or cloud services.
+	
+	%-----------------------------------------------
+	% SDGs
+	%-----------------------------------------------
+	\section{Sustainable Development Goals (SDGs)}
+	
+	\subsection{SDG 3 -- Good Health and Well-Being}
+	This project primarily aligns with SDG 3 by ensuring the safety and health of firefighters working in hazardous environments. Firefighters are exposed to extreme heat, toxic gases, and physical stress, which can lead to serious injuries or fatalities. The proposed system continuously monitors vital parameters such as heart rate, body temperature, and gas exposure, and provides real-time alerts during emergency conditions. This enables quicker response and timely rescue, significantly improving the well-being and survival chances of firefighters.
+	
+	\subsection{SDG 9 -- Industry, Innovation and Infrastructure}
+	This project supports SDG 9 by incorporating innovative technologies such as IoT, ESP32 microcontrollers, and LoRa communication. It contributes to the development of reliable and resilient infrastructure for emergency response systems, especially in challenging environments where traditional communication fails.
+	
+	\subsection{SDG 11 -- Sustainable Cities and Communities}
+	This project contributes to SDG 11 by enhancing urban safety and disaster management. By improving the efficiency and safety of firefighting operations, it helps protect lives, property, and infrastructure, making cities more resilient and sustainable.
+	
+	\subsection{SDG 13 -- Climate Action}
+	The project also supports SDG 13, as firefighters play a crucial role in managing climate-related disasters such as wildfires. The system enhances their effectiveness and safety during such events, contributing to better climate disaster response and mitigation.
+	
+	%-----------------------------------------------
+	% ADVANTAGES AND CONCLUSION
+	%-----------------------------------------------
+	\section{Advantages}
+	\begin{itemize}
+		\item Low latency due to edge processing
+		\item Scalable multi-node architecture
+		\item Efficient long-range communication
+		\item Robust emergency alert system
+		\item Multi-format data storage
+	\end{itemize}
+	
+	\section{Conclusion}
+	This paper presents a comprehensive IoT-based firefighter monitoring system integrating edge AI, LoRa communication, and real-time visualization. The system enhances firefighter safety by providing continuous monitoring, intelligent alerts, and scalable architecture. Future work includes cloud integration, predictive analytics, and enhanced AI models for improved decision-making.
+	
+	%-----------------------------------------------
+	% REFERENCES
+	%-----------------------------------------------
+	\begin{thebibliography}{99}
+		
+		\bibitem{chaplia2023}
+		O. Chaplia and H. Klym, ``Node.js framework for automated code scaling and execution on multiple distributed machines,'' \textit{2023 IEEE 18th International Conference on Computer Science and Information Technologies (CSIT)}, 2023.
+		
+		\bibitem{huang2020}
+		X. Huang, ``Research and Application of Node.js Core Technology,'' \textit{2020 International Conference on Intelligent Computing and Human-Computer Interaction (ICHCI)}, 2020.
+		
+		\bibitem{senivongse2025}
+		Senivongse and Kunphai, ``Model-Driven Development of Web Application Backend Using Node.js Framework,'' 2025.
+		
+		\bibitem{haif2024}
+		Haif et al., ``A Decentralized Dynamic Relaying-Based Framework for Enhancing LoRa Networks Performance,'' 2024.
+		
+		\bibitem{obrien2025}
+		O'Brien et al., ``Design of a Wireless Cyber-Physical System for Gas Leak Detection With LoRa,'' 2025.
+		
+		\bibitem{abdelli2025}
+		Abdelli et al., ``Field Validated Hybrid ESP-NOW and Long Range IoT Monitoring System for Energy Autonomous Precision Agriculture,'' 2025.
+		
+		\bibitem{sole2022}
+		Sol{\'e} et al., ``Implementation of a LoRa Mesh Library,'' 2022.
+		
+		\bibitem{deassis2025}
+		de Assis et al., ``Scalable Data Acquisition System for Real-Time Monitoring of Photovoltaic Plants,'' 2025.
+		
+		\bibitem{gps2023}
+		``Real-Time GPS Location Tracking System Using ESP32 and Neo-6M for IoT Applications,'' 2023.
+		
+		\bibitem{fall2022}
+		``A Novel Machine Learning Based Fall Detection System using Accelerometer and Gyroscope,'' 2022.
+		
+		\bibitem{cough2021}
+		``Statistical and Machine Learning-Based Recognition of Coughing Events Using Triaxial Accelerometer Sensor Data,'' 2021.
+		
+		\bibitem{gas2020}
+		``Evaluation of Suitability of Low-Cost Gas Sensors for Monitoring Indoor and Outdoor Urban Areas,'' 2020.
+		
+		\bibitem{wearable2021}
+		``Wearable Low-Cost and Low-Energy Consumption Gas Sensor With Machine Learning to Recognize Outdoor Areas,'' 2021.
+		
+		\bibitem{fire2022}
+		``IoT Based Fire and Motion Detection System,'' 2022.
+		
+		\bibitem{ahmad2021}
+		``On the Evaluation of DHT22 Temperature Sensor for IoT Application,'' 2021.
+		
+		\bibitem{iot2022}
+		``An IoT-Enabled Smart Sensor System for Real-Time Monitoring of Soil and Air Conditions With Integrated Web-Based Farming Guidance,'' 2022.
+		
+		\bibitem{dey2023}
+		``Design and Development of a Smart and Multipurpose IoT Embedded System Device Using ESP32 Microcontroller,'' 2023.
+		
+		\bibitem{wang2023}
+		Wang et al., ``Gas concentration-based resistance change in MQ sensors for IoT deployments,'' 2023.
+		
+		\bibitem{bolimera2025}
+		Bolimera et al., ``Flame sensor-based early fire detection using multi-sensor fusion,'' 2025.
+		
+	\end{thebibliography}
+	
+\end{document}
